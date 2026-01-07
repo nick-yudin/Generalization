@@ -1,0 +1,186 @@
+REPRODUCIBILITY PACKAGE MANIFEST
+=================================
+
+Paper: Mitigating Position-Shift Failures in Text-Based Modular Arithmetic
+       via Position Curriculum and Template Diversity
+Author: Nikolay Yudin
+Date: January 6, 2026
+Version: 1.0
+
+---
+
+FILE LISTING
+============
+
+1. DOCUMENTATION (5 files)
+---------------------------
+README.md                       - Main entry point (this directory)
+README_REPRODUCIBILITY.md       - Detailed reproducibility guide
+EXPERIMENT_SUMMARY.md           - Complete summary of findings
+REPRODUCIBILITY.md              - Experiment configurations summary
+PLOTTING_GUIDE.md               - Manual plotting instructions
+
+2. DATA FILES (3 files, 3.05 MB total)
+---------------------------------------
+final_paper_results.json        - Aggregated results (mean ± std, 3 seeds)
+                                  Size: 5.6 KB
+                                  Contains: Eval-A/B/C0/C1, CC@4 for all experiments
+
+training_curves.json            - Training curves (all steps, all seeds)
+                                  Size: 443 KB
+                                  Contains: Train acc/loss, Eval-A/B/C0 every 20-200 steps
+
+reproducibility_package.json    - Complete reproducibility package
+                                  Size: 2.6 MB
+                                  Contains: Full configs + curves + compute metrics
+
+3. CODE (4 files)
+-----------------
+unified_paper_experiment_v2.py  - Main training script
+                                  Usage: python unified_paper_experiment_v2.py \
+                                         --experiment {baseline_001|i1_001_1|i1_002_alibi|i1_002a} \
+                                         --seed {42|43|44} \
+                                         --output_dir <dir>
+
+quick_aggregate.py              - Quick results aggregation
+                                  Usage: python quick_aggregate.py [--runs_dir <dir>]
+                                  Output: final_paper_results.json
+
+create_reproducibility_package.py - Generate complete package
+                                    Usage: python create_reproducibility_package.py
+                                    Output: reproducibility_package.json, training_curves.json
+
+plot_paper_figures.ipynb        - **STANDALONE** Jupyter notebook for figures
+                                  Requirements: training_curves.json, final_paper_results.json
+                                  Output: 4 figures (300 DPI PNG) + paper_figures.zip
+
+4. METADATA (2 files)
+---------------------
+MANIFEST.txt                    - This file
+CHECKSUMS.md5                   - MD5 checksums for data integrity
+
+---
+
+EXPERIMENTS COVERED
+===================
+
+Total: 12 runs (4 experiments × 3 seeds)
+
+1. Baseline-001
+   - Seeds: 42, 43, 44
+   - K=1, no position diversity, no template diversity, no anchors
+
+2. I1_001_1 (Position Steering)
+   - Seeds: 42, 43, 44
+   - K=4, position diversity + curriculum, no template diversity, no anchors
+
+3. I1_002_ALIBI (Negative Result)
+   - Seeds: 42, 43, 44
+   - K=4, position + template diversity, anchors, ALiBi positional encoding
+
+4. I1_002a (Full Intervention)
+   - Seeds: 42, 43, 44
+   - K=4, position + template diversity, anchors, learned positional embeddings
+
+---
+
+KEY RESULTS (from final_paper_results.json)
+============================================
+
+Baseline-001:
+  Eval-A: 96.8 ± 4.2%
+  Eval-B: 14.9 ± 0.5%  ← catastrophic cliff
+  Eval-C0: 1.2 ± 0.8%
+
+I1_001_1 (Position):
+  Eval-A: 96.5 ± 0.9%
+  Eval-B: 71.7 ± 0.6%  ← +56.8 pp improvement
+  Eval-C0: 60.3 ± 6.3%  ← +59.1 pp improvement
+
+I1_002a (Full):
+  Eval-A: 96.0 ± 0.5%
+  Eval-B: 73.7 ± 0.7%  ← +58.8 pp improvement
+  Eval-C0: 80.5 ± 3.0%  ← +79.3 pp improvement
+  Eval-C1: 94.5 ± 2.2%  ← anchor OOD
+
+I1_002-ALiBi:
+  Eval-A: 21.4 ± 1.0%  ← complete failure
+
+---
+
+REPRODUCIBILITY CHECKLIST
+==========================
+
+✅ Experiment specifications documented
+✅ All random seeds documented (42, 43, 44)
+✅ Training curves saved (all steps, all seeds)
+✅ Compute metrics logged (steps, tokens, wall-time)
+✅ Final results aggregated (mean ± std)
+✅ Plotting code provided (standalone notebook)
+✅ Training scripts included
+✅ Full documentation provided
+
+---
+
+DEPENDENCIES
+============
+
+For plotting only:
+- Python 3.8+
+- matplotlib
+- seaborn
+- numpy
+
+For full reproduction:
+- Python 3.8+
+- PyTorch 1.10+
+- numpy
+- tqdm
+
+---
+
+USAGE QUICK REFERENCE
+======================
+
+View results:
+  cat final_paper_results.json
+
+Generate figures (Colab):
+  1. Upload plot_paper_figures.ipynb to Colab
+  2. Upload training_curves.json and final_paper_results.json
+  3. Run all cells
+
+Generate figures (local):
+  jupyter notebook plot_paper_figures.ipynb
+
+Reproduce experiment:
+  python unified_paper_experiment_v2.py \
+    --experiment i1_002a \
+    --seed 42 \
+    --output_dir my_runs/i1_002a_seed42
+
+Aggregate results:
+  python quick_aggregate.py --runs_dir my_runs
+
+---
+
+FILE INTEGRITY
+==============
+
+To verify data integrity, check CHECKSUMS.md5:
+  md5sum -c CHECKSUMS.md5
+
+---
+
+SUPPORT
+=======
+
+GitHub: https://github.com/nick-yudin/Generalization
+Email: n.yudin@gmail.com
+
+---
+
+Last Updated: January 7, 2026
+Package Version: 1.0
+Total Files: 14
+Total Size: ~3.1 MB (without raw runs)

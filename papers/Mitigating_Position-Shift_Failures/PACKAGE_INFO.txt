@@ -1,0 +1,146 @@
+================================================================================
+REPRODUCIBILITY PACKAGE
+================================================================================
+
+Paper Title: Mitigating Position-Shift Failures in Text-Based Modular Arithmetic
+             via Position Curriculum and Template Diversity
+
+Author:      Nikolay Yudin (Independent Researcher)
+Contact:     n.yudin@gmail.com
+Date:        January 6, 2026
+Version:     1.0
+
+GitHub:      https://github.com/nick-yudin/Generalization
+Package URL: https://github.com/nick-yudin/Generalization/tree/main/papers/Mitigating_Position-Shift_Failures
+
+================================================================================
+PACKAGE CONTENTS
+================================================================================
+
+TOTAL FILES: 15
+TOTAL SIZE:  ~3.1 MB (excluding raw run data)
+
+DOCUMENTATION (6 files):
+  ├── README.md                          Main entry point
+  ├── QUICK_START.md                     Quick usage guide (START HERE)
+  ├── README_REPRODUCIBILITY.md          Detailed reproducibility guide
+  ├── EXPERIMENT_SUMMARY.md              Complete findings summary
+  ├── REPRODUCIBILITY.md                 Configuration specifications
+  └── PLOTTING_GUIDE.md                  Manual plotting instructions
+
+DATA (3 files, 3.05 MB):
+  ├── final_paper_results.json           Aggregated results (5.6 KB)
+  ├── training_curves.json               Training curves (443 KB)
+  └── reproducibility_package.json       Complete package (2.6 MB)
+
+CODE (4 files):
+  ├── unified_paper_experiment_v2.py     Main training script
+  ├── quick_aggregate.py                 Results aggregation
+  ├── create_reproducibility_package.py  Package generation
+  └── plot_paper_figures.ipynb           **STANDALONE** figure generator
+
+METADATA (2 files):
+  ├── MANIFEST.txt                       File inventory
+  └── CHECKSUMS.md5                      Data integrity checksums
+
+================================================================================
+MAIN RESULTS
+================================================================================
+
+Position Curriculum + Template Diversity SOLVES Position-Shift Problem:
+
+  Baseline:  Eval-A 96.8%,  Eval-B 14.9%,  Eval-C0  1.2%  ← catastrophic cliff
+  I1_002a:   Eval-A 96.0%,  Eval-B 73.7%,  Eval-C0 80.5%  ← robust!
+
+  Improvements: Eval-B +58.8 pp,  Eval-C0 +79.3 pp
+
+ALiBi Negative Result: Eval-A 21.4% (complete failure in char-level parsing)
+
+================================================================================
+QUICK START
+================================================================================
+
+1. VIEW RESULTS (30 sec):
+   cat final_paper_results.json | python -m json.tool
+
+2. GENERATE FIGURES (5 min):
+   - Upload plot_paper_figures.ipynb to Google Colab
+   - Upload training_curves.json + final_paper_results.json
+   - Run all cells
+
+3. REPRODUCE EXPERIMENTS (20 min/run):
+   python unified_paper_experiment_v2.py \
+       --experiment i1_002a --seed 42 --output_dir my_runs/i1_002a_seed42
+
+================================================================================
+SYSTEM REQUIREMENTS
+================================================================================
+
+Minimal (plotting only):
+  - Python 3.8+
+  - matplotlib, seaborn, numpy
+
+Full reproduction:
+  - Python 3.8+
+  - PyTorch 1.10+
+  - numpy, tqdm
+  - ~2 GB RAM
+  - ~20 min per run (CPU), ~5 min (GPU)
+
+================================================================================
+REPRODUCIBILITY CHECKLIST
+================================================================================
+
+✅ Experiment specifications (architecture, optimizer, hyperparameters)
+✅ All random seeds documented (42, 43, 44)
+✅ Training curves saved (all steps, all seeds)
+✅ Compute metrics logged (steps, tokens, wall-time)
+✅ Final results aggregated (mean ± std across 3 seeds)
+✅ Plotting code provided (standalone Jupyter notebook)
+✅ Training scripts included (unified_paper_experiment_v2.py)
+✅ Full documentation (6 markdown files)
+
+================================================================================
+CITATION
+================================================================================
+
+@article{yudin2026position,
+  title={Mitigating Position-Shift Failures in Text-Based Modular Arithmetic 
+         via Position Curriculum and Template Diversity},
+  author={Yudin, Nikolay},
+  year={2026},
+  note={Reproducibility package: https://github.com/nick-yudin/Generalization}
+}
+
+================================================================================
+SUPPORT & CONTACT
+================================================================================
+
+GitHub Issues: https://github.com/nick-yudin/Generalization/issues
+Email:         n.yudin@gmail.com
+
+For questions about:
+  - Reproducing results → README_REPRODUCIBILITY.md
+  - Understanding findings → EXPERIMENT_SUMMARY.md
+  - Plotting figures → PLOTTING_GUIDE.md or plot_paper_figures.ipynb
+
+================================================================================
+LICENSE
+================================================================================
+
+Code: MIT License
+Data: CC BY 4.0
+
+Permission is granted to use, modify, and distribute this reproducibility
+package for academic and research purposes with proper attribution.
+
+================================================================================
+VERIFICATION
+================================================================================
+
+To verify data integrity:
+  md5sum -c CHECKSUMS.md5
+
+Expected checksums are in CHECKSUMS.md5
+
+================================================================================
