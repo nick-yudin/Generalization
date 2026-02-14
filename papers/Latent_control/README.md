@@ -1,6 +1,6 @@
 # Latent Control (Paper 2)
 
-**Title:** *The Model Already Knows Which Answer Is Better: Pairwise Probing of Hidden-State Trajectories for Best-of-K Selection*
+**Title:** *Beyond Majority Voting: Selecting LLM Answers via Hidden State Trajectory Probes*
 
 Author: **Nikolay Yudin** (`n.yudin@gmail.com`)
 
@@ -13,7 +13,15 @@ This directory is reserved for the Paper 2 (Latent Control) release bundle:
 
 **Abstract**
 
-Practitioners often sample multiple answers from a large language model (LLM) and select one via majority voting or an expensive external judge. We show that a frozen model’s own hidden-state trajectories provide a stronger, nearly free signal for best-of-K answer selection. We extract projected trajectory features (mean, standard deviation, and final-state summaries) from eight evenly spaced transformer layers over the generation, and train a single linear probe (logistic regression; ~6k parameters) with a pairwise ranking (RankNet) objective to score candidates. On TriviaQA with Llama-3.1-8B-Instruct (n=500, K=6), the probe improves lenient accuracy from 56.2% (majority vote) to 61.6% (+5.4 pp), recovering 55% of the oracle gap and achieving PickAcc 92.8%. On MATH (n=500, K=4), the probe consistently beats majority vote by ~1–2 pp (PickAcc ≈85%). We find that layer-wise informativeness forms a domain fingerprint (distributed for factual recall, late-layer concentrated for mathematical reasoning), yet a single probe trained on mixed-domain pairs matches domain-specific specialists. Finally, the probe remains effective after removing answer length as a feature, confirming it captures solution quality beyond superficial correlates. These results suggest that “the model already knows”: reading hidden states can substantially improve best-of-K selection at negligible cost.
+When a language model generates multiple candidate answers, how should we pick the best one? The default strategy—majority voting—treats the model as a black box, discarding everything except final answer strings. We show that the model’s internal computations already contain a usable signal for answer quality, and that a remarkably simple method can extract it.
+
+We propose *trajectory probes*: lightweight linear models trained on hidden-state features aggregated across the generation process. From each candidate answer, we extract mean, standard deviation, and final-token activations at eight evenly spaced layers, projected to 256 dimensions—a 6,144-dimensional trajectory fingerprint. A logistic regression probe trained with a pairwise ranking objective (RankNet) learns to prefer correct answers over incorrect ones from the same question.
+
+On TriviaQA (Llama-3.1-8B-Instruct, $t{=}0.3$, $n{=}500$, $K{=}6$), the probe reaches 61.6\% accuracy versus 56.2\% for majority voting, recovering 55\% of the gap to the oracle upper bound, with PickAcc 92.8\% among questions that have at least one correct answer. On MATH ($n{=}500$, $K{=}4$), the probe consistently beats majority voting by $\sim$1–2 pp (PickAcc $\approx$85\%), reflecting the harder discrimination problem in mathematical reasoning. The probe itself trains in under 60 seconds on CPU given precomputed features, adds negligible overhead at inference, and requires no additional LLM calls.
+
+Two findings surprised us. First, the choice of training objective matters more than classification quality: a binary classifier with higher cross-validated AUC can underperform a pairwise probe with lower AUC, because ranking among candidates is a fundamentally different task than classifying correctness in isolation. Second, the per-layer signal distribution acts as a domain fingerprint—factual recall spreads information across layers while mathematical reasoning concentrates it late—yet a single probe trained on mixed-domain data can match domain-specific specialists with no interference.
+
+Our results suggest that the “verifier” for best-of-$K$ selection need not be a separate model. It can be a linear function of what the model already computes.
 
 **Paper Outline (short)**
 
