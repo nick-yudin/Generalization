@@ -1,0 +1,48 @@
+{
+  "paper": "Beyond Majority Voting: Selecting LLM Answers via Hidden State Trajectory Probes",
+  "author": "Nikolay Yudin",
+  "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+
+  "canonical_configs": {
+    "trivia": {
+      "experiment": "v19 (3-seed)",
+      "K_gen": 4, "K_train": 3, "K_eval": 4,
+      "layers": "spread8", "proj_dim": 256,
+      "feat_mode": "mean_std_last", "feat_dim": 6144,
+      "temperature": 0.3, "max_tokens": 256,
+      "n_train": 500, "n_test": 500,
+      "seeds": [0, 1, 2]
+    },
+    "math": {
+      "experiment": "v20 (3-seed)",
+      "K_gen": 6, "K_train": 6, "K_eval": 4,
+      "layers": "spread8", "proj_dim": 256,
+      "feat_mode": "mean_std_last", "feat_dim": 6144,
+      "temperature": 0.3, "max_tokens": 1024,
+      "n_train": 500, "n_test": 500,
+      "seeds": [0, 1, 2]
+    }
+  },
+
+  "data_files": {
+    "paper2_results.json": "Aggregate results for all experiments (main table, K-sweep, multi-seed)",
+    "paper2_test_ckpts.json": "Per-question predictions for bootstrap CI and McNemar tests",
+    "paper2_layer_aucs.json": "Per-layer probe AUC for MATH and TriviaQA (Figure 2)",
+    "paper2_ablation_summary.json": "Pre-computed ablation results (length confound, transfer, diversity)"
+  },
+
+  "experiments_included": {
+    "v19_seed0": "TriviaQA canonical seed=0",
+    "v19_seed1": "TriviaQA canonical seed=1",
+    "v19_seed2": "TriviaQA canonical seed=2",
+    "v20_seed0": "MATH canonical seed=0",
+    "v20_seed1": "MATH canonical seed=1",
+    "v20_seed2": "MATH canonical seed=2",
+    "v10": "MATH pairwise K=4 (original)",
+    "v12": "MATH length-confound ablation",
+    "v15": "TriviaQA pairwise K=4 (original)",
+    "v16b": "Cross-domain transfer (merged probe)",
+    "v17": "TriviaQA ablation (layers, K-split)",
+    "v18": "MATH ablation (layers, K-split)"
+  }
+}
