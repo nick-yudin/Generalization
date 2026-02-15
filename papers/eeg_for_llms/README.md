@@ -1,13 +1,11 @@
 # EEG for LLMs (Paper 1)
 
-This directory is reserved for the Paper 1 release bundle (LaTeX source, BibTeX, and figures).
+Author: Nikolay Yudin (n.yudin@gmail.com)  
+Repo: https://github.com/nick-yudin/Generalization/tree/main/papers/eeg_for_llms
 
-Planned content:
-- `eeg_for_llms.tex` / `eeg_for_llms.pdf`
-- `eeg_for_llms.bib`
-- `figures/`
+## Contents
+
+- `eeg_for_llms.pdf` — the paper PDF (preprint).
 
 The canonical code and experiment pipeline lives in `nick-yudin/grokking-research` under:
 `latent_configuration/01_interpretable_latent_probes/`.
-
-(Artifacts will be added once the final polishing pass is complete.)
