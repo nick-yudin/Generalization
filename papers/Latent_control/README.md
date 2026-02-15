@@ -3,7 +3,7 @@
 **Title:** *Beyond Majority Voting: Selecting LLM Answers via Hidden State Trajectory Probes*
 
 Author: Nikolay Yudin (n.yudin@gmail.com)  
-Repo: https://github.com/nick-yudin/Generalization
+Repo: https://github.com/nick-yudin/Generalization/tree/main/papers/Latent_control
 
 ## Contents
 
@@ -14,7 +14,3 @@ Repo: https://github.com/nick-yudin/Generalization
   - `paper2_02_ablations.ipynb` (CPU) — key diagnostics/ablations.
   - `paper2_utils.py` — shared utilities used by the notebooks.
   - `data/` — canonical results/ckpts used for reproduction.
-
-## Notes
-
-LaTeX sources and internal build scripts are intentionally not included in this public folder.
